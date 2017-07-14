@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 useMongoClient: true;
 
 const UserSchema = new mongoose.Schema({
-  userName: String,
-  password: String
+  username: String,
+  password: String,
+  displayName: String
 
 })
 //db.users.find()
