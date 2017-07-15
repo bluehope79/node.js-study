@@ -1,4 +1,5 @@
 var express =require('express');
+var ejs = require('ejs');
 var session = require('express-session');
 var mongoose    = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
@@ -6,6 +7,9 @@ var bodyParser =require('body-parser');
 var app = express();
 var User = require('./models/user')
 app.use(bodyParser.urlencoded({ extended: false }))
+//ejs
+app.set('views', './views');
+app.set('view engine', 'ejs');
 
 //몽구스
 var db = mongoose.connection;
@@ -23,48 +27,44 @@ app.use(session({
   saveUninitialized: true,
   store:new MongoStore({ mongooseConnection: mongoose.connection })
 }));
+//웰컴페이지
+app.get('/', function(req, res){
+  res.render('welcome');
+});
 //로그아웃
 app.get('/auth/logout', function(req, res){
   delete req.session.displayName;
   req.session.save(function(){
-    res.redirect('/welcome');
+    res.redirect('/');
   });
 });
-app.get('/welcome', function(req, res){
+
+app.get('/main', function(req, res){
   if(req.session.displayName){
-      res.send(`
-         <h1> 환영합니다, ${req.session.displayName} 님</h1>
-         <a href="/auth/logout">logout</a>
-      `);
+      res.render('main',{displayName:req.session.displayName});
   } else{
-   res.send(`
-        <h1>Welcome</h1>
-        <ul>
-        <li><a href="/auth/login">login</a></li>
-        <li><a href="/auth/register">회원가입</a></li>
-        </ul>
-      `);
+   res.redirect('/');
   }
 });
 // login post방식
-app.post('/auth/login', function(req, res){
+app.post('/login', function(req, res){
   var uname = req.body.username;
   var pwd = req.body.password;
   User.findOne({ username: uname }, function(err, scott) {
-    if (scott===null) { return res.send('id를 확인해 주세요 <a href="/auth/login">login</a>'); }
+    if (scott===null) { return res.send('id를 확인해 주세요 <a href="/login">login</a>'); }
     var rightpassword=scott.password;
     if(rightpassword=== pwd){
       req.session.displayName = scott.displayName;
     return req.session.save(function(){
-       res.redirect('/welcome');});
+       res.redirect('main');});
     }else{
-        res.send('password를 확인해 주세요 <a href="/auth/login">login</a>');
+        res.send('password를 확인해 주세요 <a href="/login">login</a>');
     }
 
   });
 });
 //회원가입 페이지
-app.post('/auth/register', function(req, res){
+app.post('/register', function(req, res){
   let username = req.body.username;
   let password = req.body.password;
   let displayName = req.body.displayName
@@ -80,46 +80,15 @@ app.post('/auth/register', function(req, res){
 //users.push(user);
 req.session.displayName = req.body.displayName;
 req.session.save(function(){
-  res.redirect('/welcome');
+  res.redirect('/main');
 });
 });
-app.get('/auth/register', function(req, res){
-  var output =`
-  <h1>회원가입</h1>
-  <form action="/auth/register" method="post">
-    <p>
-   <input type ="text" name ="username" placeholder="username">
-   </p>
-   <p>
-   <input type ="password" name ="password" placeholder="password">
-    </p>
-    <p>
-    <input type ="text" name ="displayName" placeholder="displayName">
-     </p>
-    <p>
-    <input type ="submit">
-     </p>
-  </form>
-  `;
-  res.send(output);
+app.get('/register', function(req, res){
+  res.render('register');
 })
 //첫 login 페이지
-app.get('/auth/login', function(req, res){
-  var output =`
-    <h1>로그인</h1>
-    <form action="/auth/login" method="post">
-      <p>
-     <input type ="text" name ="username" placeholder="username">
-     </p>
-     <p>
-     <input type ="text" name ="password" placeholder="password">
-      </p>
-      <p>
-      <input type ="submit">
-       </p>
-    </form>
-  `;
-  res.send(output);
+app.get('/login', function(req, res){
+  res.render('login');
 })
 //test
 app.get('/test', function(req, res){
