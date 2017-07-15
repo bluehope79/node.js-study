@@ -5,12 +5,54 @@ var mongoose    = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 var bodyParser =require('body-parser');
 var app = express();
-var User = require('./models/user')
+var User = require('./models/user');
+var multer = require('multer');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+//멀터 storage사용
+var _storage = multer.diskStorage({
+  destination: function (req, file, cb) { //사용자가 제출한 파일을 어디에 저장?
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {  //저장할 파일명을 어떻게 할것인가?
+    cb(null, file.originalname);
+    }
+})
+var upload = multer({ storage: _storage}) //dest 는 디렉토리 명
 app.use(bodyParser.urlencoded({ extended: false }))
 //ejs
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
+
+//소켓 채팅창 라우팅
+app.get('/chating', function(req, res){
+res.sendFile(__dirname + '/views/index.html');
+});
+//소켓 미들웨어
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
+//파일 업로드
+app.get('/upload', function(req, res){
+  res.render('upload',{filename:null,array:User.uploadfile});
+});
+
+app.post('/upload', upload.single('userfile'), function(req, res){ //미들웨어 req파일안에 userfile은 업로드 디렉토리의 폼 네임
+  console.log(req.file);
+//  let filename = req.file.filename
+//  new User({uploadfile:filename}).save(function(err, doc){
+//     if(doc) //데이터가 정확히 들어갔는지 체크하는 코드
+//     {
+//       console.log(doc)
+  //   }
+//  })
+  //res.send('uploaded : '+req.file. filename);
+  res.render('upload',{destination:req.file.destination, filename:req.file.filename, array:User.uploadfile});
+});
 //몽구스
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -67,9 +109,10 @@ app.post('/login', function(req, res){
 app.post('/register', function(req, res){
   let username = req.body.username;
   let password = req.body.password;
-  let displayName = req.body.displayName
+  let displayName = req.body.displayName;
 
-  new User({username: username, password: password, displayName: displayName}).save(function(err, doc){
+
+  new User({username: username, password: password, displayName: displayName, uploadfile: null}).save(function(err, doc){
      if(doc) //데이터가 정확히 들어갔는지 체크하는 코드
      {
        console.log(doc)
@@ -91,6 +134,8 @@ app.get('/login', function(req, res){
   res.render('login');
 })
 //test
+app.use('/upload', express.static('uploads'));
+//test
 app.get('/test', function(req, res){
   User.findOne({ username: 'akswnd119' }, function(err, scott) {
     if (scott===null) { return res.send('id를 확인해 주세요'); }
@@ -106,6 +151,6 @@ app.get('/test', function(req, res){
 });
 
 //포트설정
-app.listen(3003, function(){
+http.listen(3003, function(){
   console.log('연결완료!');
 });

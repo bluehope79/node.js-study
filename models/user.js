@@ -4,7 +4,8 @@ useMongoClient: true;
 const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
-  displayName: String
+  displayName: String,
+  uploadfile: Array
 
 })
 //db.users.find()
