@@ -14,15 +14,15 @@
       <input type ="file" name= "userfile">
        <input type ="submit">
     </form>
-<%= array %>
-  <% if(filename){ %>
+<%= id %>
+  <% if(sessionfile){ %>
     <h1>uploaded</h1>
     <ul>
-    <li><a href = "/upload/<%=filename%>"><%=destination%><%=filename%></a></li>
+    <li><a href = "/upload/<%=sessionfile%>"><%=destination%><%=sessionfile%></a></li>
     </ul>
 
     <% } %>
-  <h2><a href="/main">메인으로</a></h2>
+  <li><a href="/main">메인으로</a></li>
   </body>
 
 </html>

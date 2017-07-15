@@ -9,6 +9,7 @@ var User = require('./models/user');
 var multer = require('multer');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var router = express.Router();
 //멀터 storage사용
 var _storage = multer.diskStorage({
   destination: function (req, file, cb) { //사용자가 제출한 파일을 어디에 저장?
@@ -38,20 +39,22 @@ io.on('connection', function(socket){
 
 //파일 업로드
 app.get('/upload', function(req, res){
-  res.render('upload',{filename:null,array:User.uploadfile});
+  User.findOne({ username: global.sessionid }, function(err, scott) {
+  res.render('upload',{sessionfile:scott.uploadfile,name:null,destination:'uploads/', id:global.sessionid});
+});
 });
 
 app.post('/upload', upload.single('userfile'), function(req, res){ //미들웨어 req파일안에 userfile은 업로드 디렉토리의 폼 네임
   console.log(req.file);
-//  let filename = req.file.filename
-//  new User({uploadfile:filename}).save(function(err, doc){
-//     if(doc) //데이터가 정확히 들어갔는지 체크하는 코드
-//     {
-//       console.log(doc)
-  //   }
-//  })
-  //res.send('uploaded : '+req.file. filename);
-  res.render('upload',{destination:req.file.destination, filename:req.file.filename, array:User.uploadfile});
+  db.collection('users').updateOne(
+  { username: global.sessionid },
+  { $set: { uploadfile: req.file.filename },
+  $currentDate: { lastModified: false } })
+  .then(function(result) {
+  });
+  User.findOne({ username: global.sessionid }, function(err, scott) {
+  res.render('upload',{ sessionfile:scott.uploadfile, destination:req.file.destination, filename:req.file.filename, array:User.uploadfile, id:global.sessionid});
+});
 });
 //몽구스
 var db = mongoose.connection;
@@ -76,6 +79,8 @@ app.get('/', function(req, res){
 //로그아웃
 app.get('/auth/logout', function(req, res){
   delete req.session.displayName;
+  global.sessionid = null;
+  global.sessionpwd = null;
   req.session.save(function(){
     res.redirect('/');
   });
@@ -90,14 +95,17 @@ app.get('/main', function(req, res){
 });
 // login post방식
 app.post('/login', function(req, res){
-  var uname = req.body.username;
-  var pwd = req.body.password;
+   var uname = req.body.username;
+    var pwd = req.body.password;
+
   User.findOne({ username: uname }, function(err, scott) {
     if (scott===null) { return res.send('id를 확인해 주세요 <a href="/login">login</a>'); }
     var rightpassword=scott.password;
     if(rightpassword=== pwd){
       req.session.displayName = scott.displayName;
     return req.session.save(function(){
+       global.sessionid = scott.username;
+       global.sessionpwd = scott.password;
        res.redirect('main');});
     }else{
         res.send('password를 확인해 주세요 <a href="/login">login</a>');
@@ -107,22 +115,24 @@ app.post('/login', function(req, res){
 });
 //회원가입 페이지
 app.post('/register', function(req, res){
-  let username = req.body.username;
-  let password = req.body.password;
-  let displayName = req.body.displayName;
+  var username = req.body.username;
+  var password = req.body.password;
+  var displayName = req.body.displayName;
 
 
   new User({username: username, password: password, displayName: displayName, uploadfile: null}).save(function(err, doc){
      if(doc) //데이터가 정확히 들어갔는지 체크하는 코드
      {
+       global.sessionid = username;
+       global.sessionpwd = password;
        console.log(doc)
      }
 
   })
-//유저 들록 밑 회원가입후 처리
+//유저 등록 밑 회원가입후 처리
 //users.push(user);
 req.session.displayName = req.body.displayName;
-req.session.save(function(){
+req.session.save(function(){    //req.session.을 기억한다.
   res.redirect('/main');
 });
 });
@@ -137,11 +147,20 @@ app.get('/login', function(req, res){
 app.use('/upload', express.static('uploads'));
 //test
 app.get('/test', function(req, res){
-  User.findOne({ username: 'akswnd119' }, function(err, scott) {
+  User.findOne({ username: 'skekf123@naver.com' }, function(err, scott) {
     if (scott===null) { return res.send('id를 확인해 주세요'); }
     var rightpassword=scott.password;
     if(rightpassword==='qkdnf22@@'){
       res.send('환영합니다.'+ scott.displayName + '님');
+
+      db.collection('users').updateOne(
+  { username: global.sessionid },
+  { $set: { uploadfile: req.file.filename },
+    $currentDate: { lastModified: false } })
+.then(function(result) {
+
+})
+
     }else{
         res.send('password를 확인해 주세요.');
     }
