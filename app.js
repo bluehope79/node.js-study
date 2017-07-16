@@ -10,6 +10,8 @@ var multer = require('multer');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var router = express.Router();
+
+
 //멀터 storage사용
 var _storage = multer.diskStorage({
   destination: function (req, file, cb) { //사용자가 제출한 파일을 어디에 저장?
@@ -22,7 +24,7 @@ var _storage = multer.diskStorage({
 var upload = multer({ storage: _storage}) //dest 는 디렉토리 명
 app.use(bodyParser.urlencoded({ extended: false }))
 //ejs
-app.set('views', './views');
+//app.set('views', './views');
 app.set('view engine', 'ejs');
 
 
@@ -40,7 +42,7 @@ io.on('connection', function(socket){
 //파일 업로드
 app.get('/upload', function(req, res){
   User.findOne({ username: global.sessionid }, function(err, scott) {
-  res.render('upload',{sessionfile:scott.uploadfile,name:null,destination:'uploads/', id:global.sessionid});
+  res.render('upload',{sessionnick:scott.displayName, sessionfile:scott.uploadfile,name:null,destination:'uploads/', id:global.sessionid});
 });
 });
 
@@ -53,7 +55,7 @@ app.post('/upload', upload.single('userfile'), function(req, res){ //미들웨�
   .then(function(result) {
   });
   User.findOne({ username: global.sessionid }, function(err, scott) {
-  res.render('upload',{ sessionfile:scott.uploadfile, destination:req.file.destination, filename:req.file.filename, array:User.uploadfile, id:global.sessionid});
+  res.render('upload',{ sessionnick:scott.displayName, sessionfile:scott.uploadfile, destination:req.file.destination, filename:req.file.filename, array:User.uploadfile, id:global.sessionid});
 });
 });
 //몽구스
@@ -81,6 +83,7 @@ app.get('/auth/logout', function(req, res){
   delete req.session.displayName;
   global.sessionid = null;
   global.sessionpwd = null;
+  global.sessionnick = null;
   req.session.save(function(){
     res.redirect('/');
   });
@@ -88,7 +91,7 @@ app.get('/auth/logout', function(req, res){
 
 app.get('/main', function(req, res){
   if(req.session.displayName){
-      res.render('main',{displayName:req.session.displayName});
+      res.render('main',{sessionnick:req.session.displayName});
   } else{
    res.redirect('/');
   }
@@ -99,16 +102,17 @@ app.post('/login', function(req, res){
     var pwd = req.body.password;
 
   User.findOne({ username: uname }, function(err, scott) {
-    if (scott===null) { return res.send('id를 확인해 주세요 <a href="/login">login</a>'); }
+    if (scott===null) { return res.send(`<script>alert("id를 확인해 주세요");  history.back();</script>` );}
     var rightpassword=scott.password;
     if(rightpassword=== pwd){
       req.session.displayName = scott.displayName;
     return req.session.save(function(){
        global.sessionid = scott.username;
        global.sessionpwd = scott.password;
+      global.sessionnick = scott.displayName;
        res.redirect('main');});
     }else{
-        res.send('password를 확인해 주세요 <a href="/login">login</a>');
+        res.send(`<script>alert("password를 확인해 주세요");  history.back();</script>`);
     }
 
   });
@@ -125,6 +129,7 @@ app.post('/register', function(req, res){
      {
        global.sessionid = username;
        global.sessionpwd = password;
+       global.sessionnick = displayName
        console.log(doc)
      }
 

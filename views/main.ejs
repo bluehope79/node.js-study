@@ -1,21 +1,76 @@
 <!DOCTYPE html>
-
 <html>
 
-  <head>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>
+	 부트스트랩 101 템플릿</title>
 
-    <title>환영</title>
-  </head>
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+</head>
 
-  <body>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Codigm intern task</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+          <div class="navbar-form navbar-right">
+          <font color="white">환영합니다, <%=sessionnick %> 님 &nbsp;<a class="btn btn-default" href="/auth/logout" role="button">log out &raquo;</a></font>
 
-    <h1>환영합니다, <%=displayName %> 님</h1>
-    <ul>
-      <li><a href="/auth/logout">logout</a></li>
-      <li><a href="/upload">file upload</a></li>
-      <li><a href="/chating">chating</a></li>
-    </ul>
+          </div>
+			</div>
+			<!--/.navbar-collapse -->
+		</div>
+	</nav>
 
-  </body>
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
+			<h1>환영합니다!</h1>
+			<p>본 홈페이지는 코다임 인턴 과제용 홈페이지 입니다.</p><p> node.js, mongoDB, soket.io, bootstrap, jquery를 이해하고 배우며 기능을 구현하였습니다.</p> <p>아래 버튼을 눌러 회원가입을 진행해 주세요.</p>
+			<p>자세한 기능은 아래를 버튼을 눌러주세요.</p>
+		</div>
+	</div>
+
+	<div class="container">
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-4">
+				<h2>Login</h2>
+				<p>로그인 기능을 제공합니다.</p><p>이용자의 고유 session을 저장하여 사용합니다.</p>
+				<p><a class="btn btn-default" href="/auth/logout" role="button">log out &raquo;</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>Upload</h2>
+				<p>파일 업로드 기능을 제공합니다.</p><p>저장된 파일은 db에 기록되어 새로고침이나 로그아웃 후에도 확인할 수 있습니다.</p>
+				<p><a class="btn btn-default" href="/upload" role="button">file upload &raquo;</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>Chating</h2>
+				<p>채팅서비스를 제공 합니다.</p><p> socket.io를 통해 broad casting방식으로 채팅 서비스를 제공합니다.</p>
+				<p><a class="btn btn-default" href="/chating" role="button">chating &raquo;</a></p>
+			</div>
+		</div>
+
+		<hr>
+
+	</div>
+	<!-- /container -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</body>
 
 </html>

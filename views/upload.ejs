@@ -1,28 +1,73 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
   <head>
-     <meta charset="=utf-8">
-    <title>환영</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   </head>
 
   <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+  		<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<a class="navbar-brand" href="#">Codigm intern task</a>
+  			</div>
+  			<div id="navbar" class="navbar-collapse collapse">
+            <div class="navbar-form navbar-right">
+            <font color="white">환영합니다, <%=sessionnick%> 님 &nbsp;<a class="btn btn-default" href="/auth/logout" role="button">log out &raquo;</a></font>
 
-    <form action="upload" method="post" enctype="multipart/form-data">
+            </div>
+  			</div>
+  			<!--/.navbar-collapse -->
+  		</div>
+  	</nav>
 
-      <input type ="file" name= "userfile">
-       <input type ="submit">
-    </form>
-<%= id %>
-  <% if(sessionfile){ %>
-    <h1>uploaded</h1>
-    <ul>
-    <li><a href = "/upload/<%=sessionfile%>"><%=destination%><%=sessionfile%></a></li>
-    </ul>
+    <div class="container" style="padding-top: 100px;">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a class="nav-link" href="/main">Main</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/upload">Upload <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/chating">Chating</a>
+            </li>
+          </ul>
+        </nav>
+        <h3 class="text-muted"><%= sessionnick %> 님의 저장된 파일입니다.</h3>
+      </div>
+      <form action="upload" method="post" enctype="multipart/form-data">
+      <div class="jumbotron">
+        <% if(sessionfile){ %><h2 class="display-3"><a href = "/upload/<%=sessionfile%>"><%=destination%><%=sessionfile%></a></h3>
+        <% } else{ %><h3 class="display-3">file name</h3><% }; %>
+            <input type ="file" name= "userfile">
+            <button class="btn btn-lg btn-success" type ="submit">제출</button>
+       </div>
+       </form>
 
-    <% } %>
-  <li><a href="/main">메인으로</a></li>
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
-
 </html>

@@ -1,31 +1,67 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../icon/favicon.ico">
 
-    <title>회원가입</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <title>Signin Template for Bootstrap</title>
   </head>
 
   <body>
-    <h1>회원가입</h1>
-    <form action="/register" method="post">
-      <p>
-     <input type ="text" name ="username" placeholder="username">
-     </p>
-     <p>
-     <input type ="password" name ="password" placeholder="password">
-      </p>
-      <p>
-      <input type ="text" name ="displayName" placeholder="닉네임">
-       </p>
-      <p>
-      <input type ="submit">
-       </p>
-    </form>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+  		<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<a class="navbar-brand" href="/">Codigm intern task</a>
+  			</div>
+  			<div id="navbar" class="navbar-collapse collapse">
+  				<form action="/login" method="post" class="navbar-form navbar-right">
+  					<div class="form-group">
+  						<input type="text" name ="username" placeholder="Email" class="form-control">
+  					</div>
+  					<div class="form-group">
+  						<input type="password"  name ="password" placeholder="Password" class="form-control">
+  					</div>
+  					<button type="submit" class="btn btn-success">Sign in</button>
+  				</form>
+  			</div>
+  			<!--/.navbar-collapse -->
+  		</div>
+  	</nav>
+
+    <div class="container ">
+
+      <form class="form-signin" style="padding-top: 50px;" action="/register" method="post">
+        <h2 class="form-signin-heading mx-auto">회원 가입을 환영합니다.</h2>
+        <label for="inputEmail" class="sr-only">id</label><br>
+        <input type="text" name ="username" id="inputEmail" class="form-control" placeholder="id를 입력해 주세요" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label><br>
+        <input type="password" name ="password" id="inputPassword" class="form-control" placeholder="Password를 입력해 주세요" required>
+        <label for="inputEmail" class="sr-only">닉네임</label><br>
+        <input type="text" name ="displayName" id="inputEmail" class="form-control" placeholder="Nick name을 입력해 주세요" required autofocus>
+        <div class="checkbox"><br>
+        </div>
+        <button class="btn btn-lg btn-info btn-block" type="submit">Sign up</button>
+        <a class="btn btn-lg btn-success btn-block" href="/main" role="button">Back</a>
+      </form>
+
+    </div> <!-- /container -->
 
 
-
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   </body>
-
 </html>
