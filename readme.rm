@@ -1,8 +1,41 @@
-코다임 인턴 과제
 
+* 실행을 위한 환경 구축
+1. node.js 설치 (https://nodejs.org/ko/download/)
+2. 에디터 설치 (https://atom.io/)
+3. mongoDB 설치 (https://www.mongodb.com/download-center?jmp=nav#community)
+4. 본 압축파일 codigmInternTask 설치 (https://github.com/manjoong/codigm)
 
-1. 실행을 위한 환경 구축
+* 실행 방법
+1. 설치된 MongoDB 폴더에서 bin 폴더로 이동후 'mongod' 실행.
+2. 'codigmInternTask' 압축 파일을 풀기.
+3. 'node.js command rompt' 창을 통해 압축이 해제된 'codigmInternTask'폴더로 이동.
+4. 이동된 'node.js command rompt' 창에서 npm install.
+5. 'node.js command rompt' 창에 'node app.js' (정상적으로 연결 되었다면 '연결완료!' console 확인).
+6. 인터넷 주소창을 연 후 'localhost:3003' 검색.
+7. main page로 이동.
 
-2. 실행 방법
+* 구현된 기능들을 짧게 소개
+1. 로그인 기능입니다. session을 통해 로그인이 이루어 지며 로그아웃 시에는 session을 delete 합니다.
+2. 파일 업로드 기능입니다. 각 아이디별로 파일을 db를 통해 저장 합니다.(로그아웃, 새로고침 후에도 파일이 저장 되어 있습니다.)
+   이름을 클릭하면 파일이 실행 됩니다.
+3. 채팅 기능 입니다. soket.io를 통해 broad cast 방식의 채팅을 제공합니다.
 
-3. 구현된 기능들을 짧게 소개
+* 구현하지 못한 기능
+1. 채팅 시 채팅 기록 유지
+: 아직 soket.io에 대한 이해가 부족하여 기능을 구현하지 못했습니다.
+방식은 파일 업로드 시, 파일을 각 아이디에 저장시킨 방법처럼 개인의 채팅기록을 db에 저장하고 채팅창을 불러올 때마다  업로드 하면 구현
+가능할 것이라 예상합니다.
+
+2. 귓속말 기능
+: soket.io는 자체적으로 sessionId를 발급하고 이것으로 사용자를 구분합니다.
+각 세션을 socket.id로 이름을 구분한 후, "io.to(소켓아이디).emit(' ' data);" 를 추가함으로써 1-1 채팅 방식을
+구현할 수 있을 것이라 예상합니다.
+
+3. 파일 업로드 기능
+: 파일 업로드 시 zip, tar 파일의 업로드 방식 기능 구현을 하지 못했습니다.
+어떤 도구를 써야 하는지 꾸준히 조사해서 구현하도록 하겠습니다.
+
+4. 파일 editing 기능 및 실행 기능
+: codemirror을 통한 에디팅 기능을 제공하지 못했습니다.
+해당 도구를 과제에 적용하기 위해 꾸준히 노력하겠습니다.
+c, python등의 실행 기능을 제공하지 못했습니다.
