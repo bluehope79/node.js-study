@@ -5,12 +5,13 @@
 3. mongoDB 설치 (https://www.mongodb.com/download-center?jmp=nav#community)
 4. 본 압축파일 codigmInternTask 설치 (https://github.com/manjoong/codigm)
 
-* 실행 방법
-1. 설치된 MongoDB 폴더에서 bin 폴더로 이동후 'mongod' 실행.
+* 실행 방법(window)
+0. db를 저장할 수 있는 폴더 생성(db storage)
+1. cmd 창을 킨 후, 설치된 MongoDB 폴더에서 bin 폴더로 이동후 'mongod --dbpath [지정경로(db storage)]' 실행.
 2. 'codigmInternTask' 압축 파일을 풀기.
-3. 'node.js command rompt' 창을 통해 압축이 해제된 'codigmInternTask'폴더로 이동.
-4. 이동된 'node.js command rompt' 창에서 npm install.
-5. 'node.js command rompt' 창에 'node app.js' (정상적으로 연결 되었다면 '연결완료!' console 확인).
+3. 'cmd' 창을 통해 압축이 해제된 'codigmInternTask'폴더로 이동.
+4. 이동된 'cmd' 창에서 'npm install' 입력
+5. 'cmd' 창에 'node app.js' 입력 (정상적으로 연결 되었다면 '연결완료!' console 확인).
 6. 인터넷 주소창을 연 후 'localhost:3003' 검색.
 7. main page로 이동.
 
